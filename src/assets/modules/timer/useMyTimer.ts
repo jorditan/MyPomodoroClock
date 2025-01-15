@@ -2,12 +2,18 @@ import { computed, ref } from 'vue';
 import { Status } from './status';
 
 export const useMyTimer = () => {
-  const actualStatus = ref<Status>(Status.waiting);
+  const totalRounds = ref<number>(0);
   const seconds = ref<number>(0);
+  const minutes = ref<number>(25);
+  const transcorredMinutes = ref<number>(0);
+  const actualStatus = ref<Status>(Status.waiting);
+  const formattedMinutes = computed(() => {
+    return minutes.value.toString().padStart(2, '0');
+  });
   const formattedSeconds = computed(() => {
     return seconds.value.toString().padStart(2, '0');
   });
-  const minutes = ref<number>(25);
+
   let intervalId: number | null = null;
 
   const handleStatus = (): void => {
@@ -25,22 +31,29 @@ export const useMyTimer = () => {
 
   const restSeconds = (): void => {
     intervalId = setInterval(() => {
-      if (seconds.value == 0 && minutes.value != 0) {
-        seconds.value = 60;
-        minutes.value -= 1;
+      if (minutes.value == 0 && seconds.value == 0) {
+        finishCounting();
+      } else if (seconds.value === 0) {
+        if (minutes.value > 0) {
+          seconds.value = 59;
+          minutes.value--;
+          transcorredMinutes.value++;
+        }
+      } else {
+        seconds.value--;
       }
-      seconds.value -= 1;
       updateTitle();
-    }, 1000);
+    }, 10);
   };
 
   const finishCounting = (): void => {
-    if (minutes.value == 0 && seconds.value == 0) {
-    }
+    stopCounting();
+    totalRounds.value++;
+    actualStatus.value = Status.finish;
   };
 
   const updateTitle = () => {
-    document.title = `${minutes.value}:${seconds.value}`;
+    document.title = `${formattedMinutes.value}:${formattedSeconds.value}`;
   };
 
   const stopCounting = (): void => {
@@ -52,8 +65,10 @@ export const useMyTimer = () => {
 
   return {
     formattedSeconds,
-    minutes,
+    formattedMinutes,
     actualStatus,
+    totalRounds,
+    transcorredMinutes,
 
     handleStatus,
     restSeconds,
