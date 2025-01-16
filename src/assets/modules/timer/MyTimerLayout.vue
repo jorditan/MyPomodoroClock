@@ -15,7 +15,7 @@
         <button @click="handleStatus" class="buttons w-[220px] aling-center">
           {{ text[actualStatus] }}
         </button>
-        <button class="underline text-[#00ff00]">¿Deseas cambiar el tiempo límite?</button>
+        <FinishModal tittle="Cambiar tiempo límite" />
       </div>
 
       <div
@@ -41,6 +41,8 @@
 import { ref, watch } from 'vue';
 import { Status } from './status';
 import { useMyTimer } from './useMyTimer';
+import FinishModal from './Modals/FinishModal/FinishModal.vue';
+
 const {
   formattedSeconds,
   formattedMinutes,
@@ -53,10 +55,10 @@ const text = {
   [Status.counting]: 'PAUSA',
   [Status.waiting]: 'COMENZAR',
   [Status.break]: 'DESPAUSAR',
-  [Status.finish]: 'REINICIAR',
+  [Status.finish]: 'DESCANSAR',
 };
-const porcentaje = ref<number>(0);
 
+const porcentaje = ref<number>(0);
 watch(transcorredMinutes, (newTrasncurred) => {
   porcentaje.value = Math.round((newTrasncurred / 25) * 100);
 });

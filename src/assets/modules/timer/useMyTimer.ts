@@ -63,6 +63,10 @@ export const useMyTimer = () => {
     }
   };
 
+  const defineLimit = (number: number): void => {
+    minutes.value = number;
+  };
+
   return {
     formattedSeconds,
     formattedMinutes,
@@ -73,5 +77,6 @@ export const useMyTimer = () => {
     handleStatus,
     restSeconds,
     finishCounting,
+    defineLimit,
   };
 };
