@@ -15,7 +15,7 @@
         <button @click="handleStatus" class="buttons w-[220px] aling-center">
           {{ text[actualStatus] }}
         </button>
-        <FinishModal tittle="Cambiar tiempo límite" />
+        <ChangueModal tittle="Cambiar tiempo límite" :status="actualStatus" />
       </div>
 
       <div
@@ -41,7 +41,7 @@
 import { ref, watch } from 'vue';
 import { Status } from './status';
 import { useMyTimer } from './useMyTimer';
-import FinishModal from './Modals/FinishModal/FinishModal.vue';
+import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 
 const {
   formattedSeconds,
@@ -51,6 +51,7 @@ const {
   transcorredMinutes,
   handleStatus,
 } = useMyTimer();
+
 const text = {
   [Status.counting]: 'PAUSA',
   [Status.waiting]: 'COMENZAR',

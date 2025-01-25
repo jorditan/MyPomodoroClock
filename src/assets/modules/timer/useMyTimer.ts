@@ -1,7 +1,9 @@
 import { computed, ref } from 'vue';
 import { Status } from './status';
+import { showError } from '@/components/Messages/Error/showError'; // Asegúrate de que la ruta sea correcta
 
 export const useMyTimer = () => {
+  const { showMessage, errorVisible } = showError();
   const totalRounds = ref<number>(0);
   const seconds = ref<number>(0);
   const minutes = ref<number>(25);
@@ -63,8 +65,16 @@ export const useMyTimer = () => {
     }
   };
 
-  const defineLimit = (number: number): void => {
-    minutes.value = number;
+  const defineLimit = (number: number | undefined): void => {
+    if (number != undefined) {
+      if (number <= 60) {
+        minutes.value = number;
+        console.log('FormattedMinutes:', formattedMinutes.value);
+        console.log('Minutes actualizado:', minutes.value);
+      } else {
+        showMessage();
+      }
+    }
   };
 
   return {
@@ -73,6 +83,7 @@ export const useMyTimer = () => {
     actualStatus,
     totalRounds,
     transcorredMinutes,
+    errorVisible,
 
     handleStatus,
     restSeconds,
