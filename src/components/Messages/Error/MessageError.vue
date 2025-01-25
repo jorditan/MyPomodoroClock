@@ -16,7 +16,7 @@
       <path d="M12 9v4" />
       <path d="M12 16v.01" />
     </svg>
-    <p class="error text-red-600 shadow-none" id="error">No puedes ingresar más de 60 minutos</p>
+    <p class="error text-red-600 shadow-none" id="error">{{ message }}</p>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ import { defineProps } from 'vue';
 
 const props = defineProps({
   isVisible: Boolean,
+  message: String,
 });
 </script>
 

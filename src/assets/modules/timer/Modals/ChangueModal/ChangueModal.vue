@@ -48,7 +48,7 @@
             v-model="inputValue"
           />
         </div>
-        <MessageError :is-visible="errorVisible" />
+        <MessageError message="No puedes ingresar más de 60 minutos" :is-visible="errorVisible" />
       </div>
       <div class="flex justify-between mt-1">
         <button class="btnSecondary w-fit p-2 text-[12px] aling-center" @click="handleVisible">
@@ -56,7 +56,10 @@
         </button>
         <button
           class="buttons btnPrimary w-fit p-2 text-[12px] aling-center"
-          @click="defineLimit(inputValue)"
+          @click="
+            defineLimit(inputValue);
+            handleVisible();
+          "
         >
           Confirmar
         </button>
@@ -78,7 +81,11 @@ const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
   if (props.status == Status.waiting) {
-    isVisible.value = !isVisible.value;
+    if (isVisible.value && errorVisible.value) {
+      console.log(errorVisible.value);
+    } else {
+      isVisible.value = !isVisible.value;
+    }
   }
 };
 </script>
