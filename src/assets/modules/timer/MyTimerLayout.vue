@@ -4,7 +4,9 @@
     class="w-full rounded-xl p-6 mr-5 m-auto bg-[#28282860] text-center h-[95%] my-5 items-center border-double border-4 border-[#1a7c1a]"
   >
     <div class="flex flex-col items-center">
-      <h1 id="tittle" class="text-7xl text-[#fafafa]">I love pomodoro <3</h1>
+      <h1 id="tittle" class="text-7xl text-[#fafafa]">
+        I love pomodoro <small class="text-[48px] shadow-none">❤️</small>
+      </h1>
       <p class="text-slate-300 text-[20px]">{{ actualStatus }}</p>
     </div>
 
@@ -15,7 +17,11 @@
         <button @click="handleStatus" class="buttons w-[220px] aling-center">
           {{ text[actualStatus] }}
         </button>
-        <ChangueModal tittle="Cambiar tiempo límite" :status="actualStatus" />
+        <ChangueModal
+          tittle="Cambiar tiempo límite"
+          :status="actualStatus"
+          @change-limit="defineLimit"
+        />
       </div>
 
       <div
@@ -49,7 +55,9 @@ const {
   actualStatus,
   totalRounds,
   transcorredMinutes,
+
   handleStatus,
+  defineLimit,
 } = useMyTimer();
 
 const text = {
@@ -76,6 +84,10 @@ h2 {
   font-family: 'Rubik 80s Fade', serif;
   font-weight: 400;
   font-style: normal;
+}
+
+small {
+  text-shadow: none;
 }
 
 .buttons {

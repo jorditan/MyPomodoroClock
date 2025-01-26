@@ -57,7 +57,7 @@
         <button
           class="buttons btnPrimary w-fit p-2 text-[12px] aling-center"
           @click="
-            defineLimit(inputValue);
+            handleClick();
             handleVisible();
           "
         >
@@ -69,24 +69,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { Status } from '../../status';
 import { useMyTimer } from '@/assets/modules/timer/useMyTimer';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
-const { defineLimit, errorVisible } = useMyTimer();
+const { errorVisible } = useMyTimer();
 
 const inputValue = ref<number>();
+
 const props = defineProps({ tittle: String, status: String });
 const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
   if (props.status == Status.waiting) {
     if (isVisible.value && errorVisible.value) {
-      console.log(errorVisible.value);
     } else {
       isVisible.value = !isVisible.value;
     }
+    inputValue.value = undefined;
   }
+};
+
+const emit = defineEmits(['change-limit']);
+const handleClick = () => {
+  emit('change-limit', inputValue.value);
 };
 </script>
 

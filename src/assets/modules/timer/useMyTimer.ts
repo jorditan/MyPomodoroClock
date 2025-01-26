@@ -65,12 +65,10 @@ export const useMyTimer = () => {
     }
   };
 
-  const defineLimit = (number: number | undefined): void => {
+  const defineLimit = async (number: number | undefined): Promise<void> => {
     if (number != undefined) {
       if (number <= 60) {
         minutes.value = number;
-        console.log('FormattedMinutes:', formattedMinutes.value);
-        console.log('Minutes actualizado:', minutes.value);
       } else {
         showMessage();
       }
