@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { Status } from './status';
 import { showError } from '@/components/Messages/Error/showError'; // Asegúrate de que la ruta sea correcta
 
@@ -9,6 +9,7 @@ export const useMyTimer = () => {
   const minutes = ref<number>(25);
   const transcorredMinutes = ref<number>(0);
   const actualStatus = ref<Status>(Status.waiting);
+
   const formattedMinutes = computed(() => {
     return minutes.value.toString().padStart(2, '0');
   });
@@ -68,6 +69,8 @@ export const useMyTimer = () => {
   const defineLimit = async (number: number | undefined): Promise<void> => {
     if (number != undefined) {
       if (number <= 60) {
+        errorVisible.value = false;
+        await nextTick();
         minutes.value = number;
       } else {
         showMessage();

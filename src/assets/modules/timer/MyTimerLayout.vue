@@ -21,6 +21,7 @@
           tittle="Cambiar tiempo límite"
           :status="actualStatus"
           @change-limit="defineLimit"
+          :errorMessage="errorVisible"
         />
       </div>
 
@@ -55,6 +56,7 @@ const {
   actualStatus,
   totalRounds,
   transcorredMinutes,
+  errorVisible,
 
   handleStatus,
   defineLimit,
@@ -68,6 +70,7 @@ const text = {
 };
 
 const porcentaje = ref<number>(0);
+
 watch(transcorredMinutes, (newTrasncurred) => {
   porcentaje.value = Math.round((newTrasncurred / 25) * 100);
 });

@@ -48,7 +48,10 @@
             v-model="inputValue"
           />
         </div>
-        <MessageError message="No puedes ingresar más de 60 minutos" :is-visible="errorVisible" />
+        <MessageError
+          message="No puedes ingresar más de 60 minutos"
+          :is-visible="props.errorMessage"
+        />
       </div>
       <div class="flex justify-between mt-1">
         <button class="btnSecondary w-fit p-2 text-[12px] aling-center" @click="handleVisible">
@@ -56,10 +59,7 @@
         </button>
         <button
           class="buttons btnPrimary w-fit p-2 text-[12px] aling-center"
-          @click="
-            handleClick();
-            handleVisible();
-          "
+          @click="handleClick()"
         >
           Confirmar
         </button>
@@ -69,20 +69,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, computed, watch } from 'vue';
 import { Status } from '../../status';
-import { useMyTimer } from '@/assets/modules/timer/useMyTimer';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
-const { errorVisible } = useMyTimer();
 
 const inputValue = ref<number>();
 
-const props = defineProps({ tittle: String, status: String });
+const props = defineProps({ tittle: String, status: String, errorMessage: Boolean });
 const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
   if (props.status == Status.waiting) {
-    if (isVisible.value && errorVisible.value) {
+    if (isVisible.value && props.errorMessage) {
     } else {
       isVisible.value = !isVisible.value;
     }
@@ -90,10 +88,24 @@ const handleVisible = () => {
   }
 };
 
+const errorVisible = computed(() => {
+  return props.errorMessage;
+});
+
 const emit = defineEmits(['change-limit']);
-const handleClick = () => {
-  emit('change-limit', inputValue.value);
+const handleClick = async () => {
+  if (props.status == Status.waiting) {
+    await emit('change-limit', inputValue.value);
+    if (isVisible.value && !errorVisible.value) {
+      isVisible.value = !isVisible.value;
+    }
+    inputValue.value = undefined;
+  }
 };
+
+watch(errorVisible, (error) => {
+  console.log(error);
+});
 </script>
 
 <style lang="css" scoped>
@@ -114,6 +126,10 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input:focus {
+  border: 2px red;
 }
 
 .modal {
