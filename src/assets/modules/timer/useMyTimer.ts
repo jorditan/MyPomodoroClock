@@ -5,9 +5,13 @@ import { showError } from '@/components/Messages/Error/showError'; // Asegúrate
 export const useMyTimer = () => {
   const { showMessage, errorVisible } = showError();
   const totalRounds = ref<number>(0);
+  const totalBreaks = ref<number>(0);
   const seconds = ref<number>(0);
   const minutes = ref<number>(25);
+  const total = ref<number>(25);
+  const breakMinutes = ref<number>(5);
   const transcorredMinutes = ref<number>(0);
+  const transcorredBreak = ref<number>(0);
   const actualStatus = ref<Status>(Status.waiting);
 
   const formattedMinutes = computed(() => {
@@ -22,17 +26,19 @@ export const useMyTimer = () => {
   const handleStatus = (): void => {
     if (actualStatus.value == Status.waiting) {
       actualStatus.value = Status.counting;
-      restSeconds();
+      passTime();
     } else if (actualStatus.value == Status.counting) {
       actualStatus.value = Status.break;
       stopCounting();
     } else if (actualStatus.value == Status.break) {
-      restSeconds();
+      passTime();
       actualStatus.value = Status.counting;
+    } else if (actualStatus.value == Status.finish) {
+      passTimeBreak();
     }
   };
 
-  const restSeconds = (): void => {
+  const passTime = (): void => {
     intervalId = setInterval(() => {
       if (minutes.value == 0 && seconds.value == 0) {
         finishCounting();
@@ -49,13 +55,36 @@ export const useMyTimer = () => {
     }, 10);
   };
 
+  const passTimeBreak = (): void => {
+    intervalId = setInterval(() => {
+      if (breakMinutes.value == 0 && seconds.value == 0) {
+        finisBreak();
+      } else if (seconds.value === 0) {
+        if (breakMinutes.value > 0) {
+          seconds.value = 59;
+          breakMinutes.value--;
+          transcorredBreak.value++;
+        }
+      } else {
+        seconds.value--;
+      }
+      updateTitle();
+    }, 10);
+  };
+
   const finishCounting = (): void => {
     stopCounting();
     totalRounds.value++;
     actualStatus.value = Status.finish;
   };
 
-  const updateTitle = () => {
+  const finisBreak = (): void => {
+    stopCounting();
+    totalBreaks.value++;
+    actualStatus.value = Status.waiting;
+  };
+
+  const updateTitle = (): void => {
     document.title = `${formattedMinutes.value}:${formattedSeconds.value}`;
   };
 
@@ -72,6 +101,7 @@ export const useMyTimer = () => {
         errorVisible.value = false;
         await nextTick();
         minutes.value = number;
+        total.value = number;
       } else {
         showMessage();
       }
@@ -79,15 +109,19 @@ export const useMyTimer = () => {
   };
 
   return {
+    breakMinutes,
     formattedSeconds,
     formattedMinutes,
     actualStatus,
     totalRounds,
+    totalBreaks,
     transcorredMinutes,
+    transcorredBreak,
     errorVisible,
+    minutes,
+    total,
 
     handleStatus,
-    restSeconds,
     finishCounting,
     defineLimit,
   };

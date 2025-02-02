@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, computed, watch } from 'vue';
+import { ref, defineEmits, computed } from 'vue';
 import { Status } from '../../status';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
 
@@ -80,10 +80,7 @@ const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
   if (props.status == Status.waiting) {
-    if (isVisible.value && props.errorMessage) {
-    } else {
-      isVisible.value = !isVisible.value;
-    }
+    isVisible.value = !isVisible.value;
     inputValue.value = undefined;
   }
 };
@@ -93,6 +90,7 @@ const errorVisible = computed(() => {
 });
 
 const emit = defineEmits(['change-limit']);
+
 const handleClick = async () => {
   if (props.status == Status.waiting) {
     await emit('change-limit', inputValue.value);
@@ -102,10 +100,6 @@ const handleClick = async () => {
     inputValue.value = undefined;
   }
 };
-
-watch(errorVisible, (error) => {
-  console.log(error);
-});
 </script>
 
 <style lang="css" scoped>

@@ -11,7 +11,9 @@
     </div>
 
     <article id="myClock" class="mt-5">
-      <h2 class="text-8xl text-[#fafafa]">{{ formattedMinutes }}:{{ formattedSeconds }}</h2>
+      <h2 class="text-8xl text-[#fafafa]">
+        {{ actualStatus == Status.finish ? breakMinutes : formattedMinutes }}:{{ formattedSeconds }}
+      </h2>
 
       <div class="flex gap-4 justify-center mt-5 flex-col items-center">
         <button @click="handleStatus" class="buttons w-[220px] aling-center">
@@ -39,7 +41,7 @@
       </div>
 
       <p class="text-[20px] mt-5">Llevas realizadas: {{ totalRounds }} ronda/s de pomodoro</p>
-      <p class="text-[16px]">0 descanso/s</p>
+      <p class="text-[16px]">{{ totalBreaks }} descanso/s</p>
     </article>
   </section>
 </template>
@@ -53,10 +55,13 @@ import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 const {
   formattedSeconds,
   formattedMinutes,
+  breakMinutes,
   actualStatus,
   totalRounds,
+  totalBreaks,
   transcorredMinutes,
   errorVisible,
+  total,
 
   handleStatus,
   defineLimit,
@@ -72,7 +77,7 @@ const text = {
 const porcentaje = ref<number>(0);
 
 watch(transcorredMinutes, (newTrasncurred) => {
-  porcentaje.value = Math.round((newTrasncurred / 25) * 100);
+  porcentaje.value = Math.round((newTrasncurred / total.value) * 100);
 });
 </script>
 
