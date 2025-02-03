@@ -7,12 +7,12 @@
       <h1 id="tittle" class="text-7xl text-[#fafafa]">
         I love pomodoro <small class="text-[48px] shadow-none">❤️</small>
       </h1>
-      <p class="text-slate-300 text-[20px]">{{ actualStatus }}</p>
+      <p class="text-slate-300 text-[20px] animate-pulse">{{ actualStatus }}</p>
     </div>
 
     <article id="myClock" class="mt-5">
       <h2 class="text-8xl text-[#fafafa]">
-        {{ actualStatus == Status.finish ? breakMinutes : formattedMinutes }}:{{ formattedSeconds }}
+        {{ isResting() ? breakMinutes : formattedMinutes }}:{{ formattedSeconds }}
       </h2>
 
       <div class="flex gap-4 justify-center mt-5 flex-col items-center">
@@ -72,6 +72,8 @@ const text = {
   [Status.waiting]: 'COMENZAR',
   [Status.break]: 'DESPAUSAR',
   [Status.finish]: 'DESCANSAR',
+  [Status.resting]: 'PAUSA',
+  [Status.breakRest]: 'DESPAUSAR',
 };
 
 const porcentaje = ref<number>(0);
@@ -79,6 +81,14 @@ const porcentaje = ref<number>(0);
 watch(transcorredMinutes, (newTrasncurred) => {
   porcentaje.value = Math.round((newTrasncurred / total.value) * 100);
 });
+
+const isResting = () => {
+  return (
+    actualStatus.value != Status.break &&
+    actualStatus.value != Status.counting &&
+    actualStatus.value != Status.waiting
+  );
+};
 </script>
 
 <style>

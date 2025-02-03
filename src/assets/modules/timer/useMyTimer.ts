@@ -9,6 +9,7 @@ export const useMyTimer = () => {
   const seconds = ref<number>(0);
   const minutes = ref<number>(25);
   const total = ref<number>(25);
+  const totalBreakMinutes = ref<number>(5);
   const breakMinutes = ref<number>(5);
   const transcorredMinutes = ref<number>(0);
   const transcorredBreak = ref<number>(0);
@@ -34,6 +35,13 @@ export const useMyTimer = () => {
       passTime();
       actualStatus.value = Status.counting;
     } else if (actualStatus.value == Status.finish) {
+      actualStatus.value = Status.resting;
+      passTimeBreak();
+    } else if (actualStatus.value == Status.resting) {
+      stopCounting();
+      actualStatus.value = Status.breakRest;
+    } else if (actualStatus.value == Status.breakRest) {
+      actualStatus.value = Status.resting;
       passTimeBreak();
     }
   };
@@ -74,18 +82,21 @@ export const useMyTimer = () => {
 
   const finishCounting = (): void => {
     stopCounting();
+    minutes.value = total.value;
     totalRounds.value++;
     actualStatus.value = Status.finish;
+    transcorredMinutes.value = 0;
   };
 
   const finisBreak = (): void => {
     stopCounting();
+    breakMinutes.value = totalBreakMinutes.value;
     totalBreaks.value++;
     actualStatus.value = Status.waiting;
   };
 
   const updateTitle = (): void => {
-    document.title = `${formattedMinutes.value}:${formattedSeconds.value}`;
+    document.title = `${formattedMinutes.value}:${formattedSeconds.value} - ${actualStatus.value}`;
   };
 
   const stopCounting = (): void => {
@@ -97,7 +108,9 @@ export const useMyTimer = () => {
 
   const defineLimit = async (number: number | undefined): Promise<void> => {
     if (number != undefined) {
-      if (number <= 60) {
+      if (number == 0) {
+        showMessage();
+      } else if (number <= 60) {
         errorVisible.value = false;
         await nextTick();
         minutes.value = number;
