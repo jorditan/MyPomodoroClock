@@ -1,6 +1,6 @@
 import { computed, nextTick, ref } from 'vue';
 import { Status } from './status';
-import { showError } from '@/components/Messages/Error/showError'; // Asegúrate de que la ruta sea correcta
+import { showError } from '@/components/Messages/Error/showError';
 
 export const useMyTimer = () => {
   const { showMessage, errorVisible } = showError();
@@ -108,15 +108,15 @@ export const useMyTimer = () => {
 
   const defineLimit = async (number: number | undefined): Promise<void> => {
     if (number != undefined) {
-      if (number == 0) {
-        showMessage();
+      if (number <= 0) {
+        showMessage('Ingresa un número mayor a 0');
       } else if (number <= 60) {
         errorVisible.value = false;
         await nextTick();
         minutes.value = number;
         total.value = number;
       } else {
-        showMessage();
+        showMessage('No puedes ingresar más de 60 minutos');
       }
     }
   };

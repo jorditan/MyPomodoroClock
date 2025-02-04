@@ -16,7 +16,7 @@
       <path d="M12 9v4" />
       <path d="M12 16v.01" />
     </svg>
-    <p class="error text-red-600 shadow-none" id="error">{{ message }}</p>
+    <p class="error text-red-600 shadow-none" id="error">{{ props.message }}</p>
   </div>
 </template>
 

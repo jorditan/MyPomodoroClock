@@ -48,10 +48,7 @@
             v-model="inputValue"
           />
         </div>
-        <MessageError
-          message="No puedes ingresar más de 60 minutos"
-          :is-visible="props.errorMessage"
-        />
+        <MessageError :is-visible="props.errorMessage" :message="errorMessageComputed" />
       </div>
       <div class="flex justify-between mt-1">
         <button class="btnSecondary w-fit p-2 text-[12px] aling-center" @click="handleVisible">
@@ -74,6 +71,7 @@ import { Status } from '../../status';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
 
 const inputValue = ref<number>();
+const previousInput = ref<number | undefined>(undefined);
 
 const props = defineProps({ tittle: String, status: String, errorMessage: Boolean });
 const isVisible = ref<boolean>(false);
@@ -97,9 +95,22 @@ const handleClick = async () => {
     if (isVisible.value && !errorVisible.value) {
       isVisible.value = !isVisible.value;
     }
+    previousInput.value = inputValue.value;
     inputValue.value = undefined;
   }
 };
+
+const errorMessageComputed = computed(() => {
+  if (previousInput.value !== undefined && errorVisible) {
+    if (previousInput.value >= 60) {
+      return 'No puedes realizar más de 60 minutos de pomodoro';
+    }
+    if (previousInput.value >= 0) {
+      return 'Ingrese más de 0 minutos';
+    }
+  }
+  return '';
+});
 </script>
 
 <style lang="css" scoped>

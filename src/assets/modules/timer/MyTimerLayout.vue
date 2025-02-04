@@ -16,9 +16,22 @@
       </h2>
 
       <div class="flex gap-4 justify-center mt-5 flex-col items-center">
-        <button @click="handleStatus" class="buttons w-[220px] aling-center">
-          {{ text[actualStatus] }}
-        </button>
+        <div class="flex flex-col gap-6">
+          <button @click="handleStatus" class="buttons w-[220px] aling-center">
+            {{ text[actualStatus] }}
+          </button>
+          <button
+            :class="[
+              'secondary w-[220px] aling-center',
+              {
+                enabled: actualStatus != Status.counting,
+                disabled: actualStatus == Status.counting,
+              },
+            ]"
+          >
+            GENERAR RESUMEN
+          </button>
+        </div>
         <ChangueModal
           tittle="Cambiar tiempo límite"
           :status="actualStatus"
@@ -110,6 +123,20 @@ small {
 
 .buttons {
   @apply text-[24px] rounded-sm text-[#000000] bg-[#00ff00] px-6 py-2 backdrop-blur-lg;
+}
+
+.secondary {
+  @apply text-[24px] rounded-sm text-[#cacaca] border-2;
+}
+
+.enabled {
+  @apply hover:text-[#00ff00] hover:border-[#00ff00];
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: #686868;
+  border-color: #686868;
 }
 
 .buttons {
