@@ -24,8 +24,8 @@
             :class="[
               'secondary w-[220px] aling-center',
               {
-                enabled: actualStatus != Status.counting,
-                disabled: actualStatus == Status.counting,
+                enabled: actualStatus == Status.finish,
+                disabled: actualStatus != Status.finish,
               },
             ]"
           >
