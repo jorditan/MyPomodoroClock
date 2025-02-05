@@ -61,8 +61,8 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { Status } from './status';
-import { useMyTimer } from './useMyTimer';
+import { Status } from '../../interfaces/status';
+import { useMyTimer } from '../../composables/useMyTimer';
 import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 
 const {

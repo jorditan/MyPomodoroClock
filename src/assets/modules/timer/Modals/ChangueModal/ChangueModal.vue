@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { ref, defineEmits, computed } from 'vue';
-import { Status } from '../../status';
+import { Status } from '../../../../interfaces/status';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
 
 const inputValue = ref<number>();

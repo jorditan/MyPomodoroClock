@@ -1,5 +1,5 @@
 import { computed, nextTick, ref } from 'vue';
-import { Status } from './status';
+import { Status } from '../interfaces/status';
 import { showError } from '@/components/Messages/Error/showError';
 
 export const useMyTimer = () => {
