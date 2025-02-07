@@ -4,15 +4,17 @@
   >
     <h2 class="text-3xl text-[#fafafa]">Mi música</h2>
     <div class="mt-2">
-      <SongsGroup genre="Jazz" />
-      <SongsGroup genre="Sonidos binaurales" />
-      <SongsGroup genre="Ruido blanco" />
+      <SongsGroup genre="Jazz" :songs="jazzSongs" />
+      <SongsGroup genre="Sonidos binaurales" :songs="binauralSongs" />
+      <SongsGroup genre="Ruido blanco" :songs="whiteNoise" />
     </div>
     <div></div>
   </aside>
 </template>
 <script lang="ts" setup>
+import { myMusic } from '@/components/Music/composable/myMusic';
 import SongsGroup from '@/components/Music/SongsGroup.vue';
+const { binauralSongs, jazzSongs, whiteNoise } = myMusic();
 </script>
 
 <style scoped>

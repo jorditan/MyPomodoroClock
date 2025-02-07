@@ -6,17 +6,21 @@
     <hr />
 
     <ul id="songs" class="flex gap-1 mt-2 flex-col w-full rounded-sm">
-      <SongFile name="Hola" />
-      <SongFile name="Hola" />
-      <SongFile name="Hola" />
+      <div v-for="song in props.songs" :key="song.id">
+        <SongFile :a-song="song" />
+      </div>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { ISong } from '@/assets/interfaces/songs.interface';
 import SongFile from './SongFile.vue';
 
-const props = defineProps({ genre: String, songs: Array });
+const props = defineProps<{
+  genre: string;
+  songs: ISong[];
+}>();
 </script>
 
 <style lang="css" scoped>

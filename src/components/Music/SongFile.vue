@@ -1,9 +1,13 @@
 <template>
   <div
-    @click="handleClick"
+    @click="handleClick()"
     class="containerSong flex gap-2 rounded-sm justify-between items-center p-1 px-3"
   >
-    <li>{{ props.name }}</li>
+    <div>
+      <li>
+        {{ props.aSong.name }}
+      </li>
+    </div>
     <svg
       v-if="pause"
       xmlns="http://www.w3.org/2000/svg"
@@ -36,12 +40,22 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-const props = defineProps({ name: String, file: String, id: Number });
+import { myMusic } from './composable/myMusic';
+import type { ISong } from '@/assets/interfaces/songs.interface';
+
+const { addSong } = myMusic();
+const props = defineProps<{ aSong: ISong }>();
 
 const pause = ref<boolean>(true);
 
 const handleClick = () => {
   pause.value = !pause.value;
+  if (props.aSong.isPlaying) {
+    props.aSong.pause();
+  } else {
+    props.aSong.reproduce();
+    addSong(props.aSong);
+  }
 };
 </script>
 
