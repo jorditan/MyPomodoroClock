@@ -1,7 +1,12 @@
 <template>
   <div
     @click="handleClick()"
-    class="containerSong flex gap-2 rounded-sm justify-between items-center p-1 px-3"
+    :class="[
+      'flex gap-2 rounded-sm justify-between items-center p-1 px-3 hover:bg-[#00ff002a]',
+      {
+        playing: props.aSong.isPlaying,
+      },
+    ]"
   >
     <div>
       <li>
@@ -9,7 +14,7 @@
       </li>
     </div>
     <svg
-      v-if="pause"
+      v-if="!props.aSong.isPlaying"
       xmlns="http://www.w3.org/2000/svg"
       width="14"
       height="14"
@@ -39,22 +44,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { myMusic } from './composable/myMusic';
+import {} from './composable/myMusic';
 import type { ISong } from '@/assets/interfaces/songs.interface';
 
-const { addSong } = myMusic();
 const props = defineProps<{ aSong: ISong }>();
 
-const pause = ref<boolean>(true);
-
 const handleClick = () => {
-  pause.value = !pause.value;
   if (props.aSong.isPlaying) {
     props.aSong.pause();
   } else {
     props.aSong.reproduce();
-    addSong(props.aSong);
   }
 };
 </script>
@@ -63,5 +62,9 @@ const handleClick = () => {
 li {
   color: #cacaca;
   text-shadow: none;
+}
+
+.playing {
+  @apply bg-[#00ff0050];
 }
 </style>

@@ -12,6 +12,13 @@ import nothing from '@/assets/songs/Just nothing.mp3';
 
 export const myMusic = () => {
   const reproducedSongs = ref<ISong[]>([]);
+  const volumen = ref<number>(0.2);
+  const audio = new Audio();
+  const isMuted = ref<boolean>(false);
+  const currentSongFile = ref('');
+  audio.volume = volumen.value;
+  audio.loop = true;
+
   class Song implements ISong {
     name: string;
     id: number;
@@ -38,22 +45,32 @@ export const myMusic = () => {
 
     reproduce(): void {
       this.isPlaying = true;
-      console.log(
-        `Se está reproduciendo la canción ${this.name} - archivo: ${this.file} - sonando = ${this.isPlaying}`,
-      );
+      const prevSong = reproducedSongs.value[reproducedSongs.value.length - 1];
+      this.addToList(prevSong);
+      if (prevSong !== this) {
+        currentSongFile.value = this.file; // 🔹 Guardamos la referencia en Vue
+        audio.pause();
+        audio.src = this.file;
+      }
+      setTimeout(() => {
+        audio.play();
+      }, 100);
+    }
+
+    addToList(prevSong: ISong): void {
+      if (prevSong != this) {
+        reproducedSongs.value.push(this);
+        if (prevSong != undefined) {
+          prevSong.pause();
+        }
+      }
     }
 
     pause(): void {
       this.isPlaying = false;
-      console.log(
-        `Se pausó la canción ${this.name} - archivo: ${this.file} - Sonando = ${this.isPlaying}`,
-      );
+      audio.pause();
     }
   }
-
-  const addSong = (aSong: Song) => {
-    reproducedSongs.value.push(aSong);
-  };
 
   const songs = ref<Song[]>([
     new Song('Vintage mood', 1, 180, vintage, 'Jazz'),
@@ -79,12 +96,39 @@ export const myMusic = () => {
     return song.genre == 'Ruido blanco';
   });
 
+  const addVolume = (): void => {
+    if (volumen.value < 1) {
+      volumen.value = Number((volumen.value + 0.2).toFixed(1));
+    }
+    audio.volume = volumen.value;
+  };
+
+  const ressVolume = (): void => {
+    if (volumen.value > 0) {
+      volumen.value = Number((volumen.value - 0.2).toFixed(1));
+    }
+  };
+
+  const muteMusic = () => {
+    if (!audio.src) {
+      console.warn('⚠ No hay ninguna canción reproduciéndose.');
+      return;
+    }
+
+    isMuted.value = !isMuted.value;
+    audio.muted = isMuted.value;
+  };
+
   return {
     songs,
     binauralSongs,
     jazzSongs,
     whiteNoise,
+    volumen,
+    isMuted,
 
-    addSong,
+    addVolume,
+    ressVolume,
+    muteMusic,
   };
 };

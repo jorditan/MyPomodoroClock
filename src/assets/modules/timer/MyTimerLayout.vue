@@ -55,6 +55,8 @@
 
       <p class="text-[20px] mt-5">Llevas realizadas: {{ totalRounds }} ronda/s de pomodoro</p>
       <p class="text-[16px]">{{ totalBreaks }} descanso/s</p>
+
+      <VolumeControler class="mt-5" />
     </article>
   </section>
 </template>
@@ -64,6 +66,7 @@ import { ref, watch } from 'vue';
 import { Status } from '../../interfaces/status';
 import { useMyTimer } from '../../composables/useMyTimer';
 import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
+import VolumeControler from '@/components/Music/VolumeControler.vue';
 
 const {
   formattedSeconds,

@@ -105,7 +105,7 @@ const errorMessageComputed = computed(() => {
     if (previousInput.value >= 60) {
       return 'No puedes realizar más de 60 minutos de pomodoro';
     }
-    if (previousInput.value >= 0) {
+    if (previousInput.value <= 0) {
       return 'Ingrese más de 0 minutos';
     }
   }
