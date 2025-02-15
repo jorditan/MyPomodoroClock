@@ -24,17 +24,12 @@
           >
             {{ text[actualStatus] }}
           </button>
-          <button
-            :class="[
-              'secondary w-[220px] aling-center ',
-              {
-                enabled: actualStatus == Status.finish,
-                disabled: actualStatus != Status.finish,
-              },
-            ]"
-          >
-            GENERAR RESUMEN
-          </button>
+          <MyResumeModal
+            tittle="Resumen de mi pomodoro"
+            :resume-minutes="resumeMinutes"
+            :resume-break="resumeBreak"
+            :status="actualStatus"
+          />
         </div>
         <ChangueModal
           tittle="Cambiar tiempo límite"
@@ -71,6 +66,7 @@ import { Status } from '../../interfaces/status';
 import { useMyTimer } from '../../composables/useMyTimer';
 import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 import VolumeControler from '@/components/Music/VolumeControler.vue';
+import MyResumeModal from './Modals/ResumeModal/MyResumeModal.vue';
 
 const {
   formattedSeconds,
@@ -82,6 +78,8 @@ const {
   transcorredMinutes,
   errorVisible,
   total,
+  resumeMinutes,
+  resumeBreak,
 
   handleStatus,
   defineLimit,
@@ -152,7 +150,7 @@ small {
 
 #pomodoro-container,
 #sidebar-music {
-  box-shadow: inset 0px 0px 1.5rem;
+  box-shadow: inset 0px 0px 1.2rem;
   background-image: linear-gradient(0deg, #0000 10%, #fff1 90%, #0000 100%);
   animation: crtAnimation 300s linear infinite;
   background-size: 100% 80%;

@@ -8,7 +8,7 @@
           height="16"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#000000"
+          stroke="#00ff00"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -21,11 +21,11 @@
       <MyIconButton :some-function="addVolume">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#000000"
+          stroke="#00ff00"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -42,14 +42,14 @@
       <Volume2
         v-if="!isMuted"
         stroke="#cacaca"
-        height="16"
+        height="20"
         :onclick="mute"
         class="m-1 hover:fill-[#fafafa] transition-all"
       />
       <VolumeOff
         v-else
         stroke="#cacaca"
-        height="16"
+        height="20"
         :onclick="mute"
         class="m-1 hover:fill-[#fafafa] transition-all"
       />
@@ -68,7 +68,7 @@ const { volume, isMuted, addVolume, ressVolume, mute } = myMusic();
 
 <style lang="css" scoped>
 p {
-  color: #cacaca;
+  color: #fafafa;
   text-shadow: none;
 }
 </style>

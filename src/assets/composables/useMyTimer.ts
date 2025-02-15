@@ -16,6 +16,9 @@ export const useMyTimer = () => {
   const transcorredBreak = ref<number>(0);
   const actualStatus = ref<Status>(Status.waiting);
 
+  const resumeMinutes = ref<number>(0);
+  const resumeBreak = ref<number>(0);
+
   const formattedMinutes = computed(() => {
     return minutes.value.toString().padStart(2, '0');
   });
@@ -90,6 +93,7 @@ export const useMyTimer = () => {
     totalRounds.value++;
     actualStatus.value = Status.finish;
     transcorredMinutes.value = 0;
+    resumeMinutes.value += minutes.value;
   };
 
   const finisBreak = (): void => {
@@ -97,6 +101,7 @@ export const useMyTimer = () => {
     breakMinutes.value = totalBreakMinutes.value;
     totalBreaks.value++;
     actualStatus.value = Status.waiting;
+    resumeBreak.value += breakMinutes.value;
   };
 
   const updateTitle = (): void => {
@@ -136,6 +141,8 @@ export const useMyTimer = () => {
     transcorredBreak,
     errorVisible,
     minutes,
+    resumeMinutes,
+    resumeBreak,
     total,
 
     handleStatus,
