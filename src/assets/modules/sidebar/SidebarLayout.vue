@@ -1,5 +1,6 @@
 <template>
   <aside
+    id="sidebar-music"
     class="h-[95%] bg-[#28282860] p-6 w-80 rounded-xl mx-5 border-double border-4 border-[#1a7c1a] animate-pulseBorder"
   >
     <h2 class="text-3xl text-[#fafafa]">Mi música</h2>

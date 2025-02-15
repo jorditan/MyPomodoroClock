@@ -5,7 +5,7 @@
     </p>
     <hr />
 
-    <ul id="songs" class="flex gap-1 mt-2 flex-col w-full rounded-sm">
+    <ul id="songs" class="flex gap-2 mt-2 flex-col w-full rounded-sm">
       <div v-for="song in props.songs" :key="song.id">
         <SongFile :a-song="song" />
       </div>

@@ -1,6 +1,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Status } from '../interfaces/status';
 import { showError } from '@/components/Messages/Error/showError';
+import notification from '@/assets/songs/notificacion.mp3';
 
 export const useMyTimer = () => {
   const { showMessage, errorVisible } = showError();
@@ -82,6 +83,9 @@ export const useMyTimer = () => {
 
   const finishCounting = (): void => {
     stopCounting();
+    const audio = new Audio(notification);
+    audio.volume = 0.5;
+    audio.play();
     minutes.value = total.value;
     totalRounds.value++;
     actualStatus.value = Status.finish;

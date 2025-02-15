@@ -38,19 +38,19 @@
       </MyIconButton>
     </div>
     <div class="flex gap-1 items-center">
-      <p>Volumen: {{ volumen }}</p>
+      <p>Volumen: {{ volume }}</p>
       <Volume2
         v-if="!isMuted"
         stroke="#cacaca"
         height="16"
-        :onclick="muteMusic"
+        :onclick="mute"
         class="m-1 hover:fill-[#fafafa] transition-all"
       />
       <VolumeOff
         v-else
         stroke="#cacaca"
         height="16"
-        :onclick="muteMusic"
+        :onclick="mute"
         class="m-1 hover:fill-[#fafafa] transition-all"
       />
     </div>
@@ -63,7 +63,7 @@ import { myMusic } from './composable/myMusic';
 import { Volume2 } from 'lucide-vue-next';
 import { VolumeOff } from 'lucide-vue-next';
 
-const { volumen, isMuted, addVolume, ressVolume, muteMusic } = myMusic();
+const { volume, isMuted, addVolume, ressVolume, mute } = myMusic();
 </script>
 
 <style lang="css" scoped>

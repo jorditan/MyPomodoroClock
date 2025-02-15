@@ -1,5 +1,6 @@
 <template>
   <section
+    id="pomodoro-container"
     aria-label="Pomodoro section"
     class="w-full rounded-xl p-6 mr-5 m-auto bg-[#28282860] text-center h-[95%] my-5 items-center border-double border-4 border-[#1a7c1a]"
   >
@@ -11,18 +12,21 @@
     </div>
 
     <article id="myClock" class="mt-5">
-      <h2 class="text-8xl text-[#fafafa]">
+      <h2 class="text-8xl font-bold text-[#fafafa]">
         {{ isResting() ? breakMinutes : formattedMinutes }}:{{ formattedSeconds }}
       </h2>
 
       <div class="flex gap-4 justify-center mt-5 flex-col items-center">
         <div class="flex flex-col gap-6">
-          <button @click="handleStatus" class="buttons w-[220px] aling-center">
+          <button
+            @click="handleStatus"
+            class="buttons w-[220px] aling-center hover:bg-[#4af44a] transition-all"
+          >
             {{ text[actualStatus] }}
           </button>
           <button
             :class="[
-              'secondary w-[220px] aling-center',
+              'secondary w-[220px] aling-center ',
               {
                 enabled: actualStatus == Status.finish,
                 disabled: actualStatus != Status.finish,
@@ -115,7 +119,7 @@ html {
 }
 
 h2 {
-  font-family: 'Rubik 80s Fade', serif;
+  font-family: 'VT323', serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -134,6 +138,26 @@ small {
 
 .enabled {
   @apply hover:text-[#00ff00] hover:border-[#00ff00];
+}
+
+@keyframes crtAnimation {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 10000%;
+  }
+}
+
+#pomodoro-container,
+#sidebar-music {
+  box-shadow: inset 0px 0px 1.5rem;
+  background-image: linear-gradient(0deg, #0000 10%, #fff1 90%, #0000 100%);
+  animation: crtAnimation 300s linear infinite;
+  background-size: 100% 80%;
+  mask-image: linear-gradient(to bottom, #0005 50%, #000 50%);
+  mask-size: 100% 2px;
 }
 
 .disabled {

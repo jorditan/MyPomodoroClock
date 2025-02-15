@@ -12,11 +12,11 @@ import nothing from '@/assets/songs/Just nothing.mp3';
 
 export const myMusic = () => {
   const reproducedSongs = ref<ISong[]>([]);
-  const volumen = ref<number>(0.2);
+  const volume = ref<number>(0.2);
   const audio = new Audio();
   const isMuted = ref<boolean>(false);
-  const currentSongFile = ref('');
-  audio.volume = volumen.value;
+  const currentSong = ref<ISong | undefined>();
+  audio.volume = volume.value;
   audio.loop = true;
 
   class Song implements ISong {
@@ -26,6 +26,7 @@ export const myMusic = () => {
     isPlaying: boolean;
     file: string;
     genre: string;
+    volume: number;
 
     constructor(
       name: string,
@@ -33,6 +34,7 @@ export const myMusic = () => {
       duracion: number,
       file: string,
       genre: string,
+      volume: number = 0.2,
       isPlaying: boolean = false,
     ) {
       this.name = name;
@@ -40,29 +42,31 @@ export const myMusic = () => {
       this.duracion = duracion;
       this.file = file;
       this.genre = genre;
+      this.volume = volume;
       this.isPlaying = isPlaying;
     }
 
     reproduce(): void {
       this.isPlaying = true;
-      const prevSong = reproducedSongs.value[reproducedSongs.value.length - 1];
+      const prevSong =
+        reproducedSongs.value.length > 0
+          ? reproducedSongs.value[reproducedSongs.value.length - 1]
+          : undefined;
       this.addToList(prevSong);
       if (prevSong !== this) {
-        currentSongFile.value = this.file; // 🔹 Guardamos la referencia en Vue
-        audio.pause();
+        currentSong.value = this;
         audio.src = this.file;
+        audio.volume = this.volume;
       }
       setTimeout(() => {
         audio.play();
       }, 100);
     }
 
-    addToList(prevSong: ISong): void {
+    addToList(prevSong: ISong | undefined): void {
       if (prevSong != this) {
         reproducedSongs.value.push(this);
-        if (prevSong != undefined) {
-          prevSong.pause();
-        }
+        prevSong?.pause();
       }
     }
 
@@ -72,6 +76,12 @@ export const myMusic = () => {
     }
   }
 
+  audio.addEventListener('ended', () => {
+    reproducedSongs.value[reproducedSongs.value.length - 1].reproduce();
+  });
+  if (reproducedSongs.value.length > 0) {
+    reproducedSongs.value[reproducedSongs.value.length - 1].reproduce();
+  }
   const songs = ref<Song[]>([
     new Song('Vintage mood', 1, 180, vintage, 'Jazz'),
     new Song('Coffe jazz', 2, 200, coffeeJazz, 'Jazz'),
@@ -97,24 +107,18 @@ export const myMusic = () => {
   });
 
   const addVolume = (): void => {
-    if (volumen.value < 1) {
-      volumen.value = Number((volumen.value + 0.2).toFixed(1));
+    if (volume.value < 1) {
+      volume.value = Number((volume.value + 0.2).toFixed(1));
     }
-    audio.volume = volumen.value;
   };
 
   const ressVolume = (): void => {
-    if (volumen.value > 0) {
-      volumen.value = Number((volumen.value - 0.2).toFixed(1));
+    if (volume.value > 0) {
+      volume.value = Number((volume.value - 0.2).toFixed(1));
     }
   };
 
-  const muteMusic = () => {
-    if (!audio.src) {
-      console.warn('⚠ No hay ninguna canción reproduciéndose.');
-      return;
-    }
-
+  const mute = () => {
     isMuted.value = !isMuted.value;
     audio.muted = isMuted.value;
   };
@@ -124,11 +128,11 @@ export const myMusic = () => {
     binauralSongs,
     jazzSongs,
     whiteNoise,
-    volumen,
+    volume,
     isMuted,
 
     addVolume,
+    mute,
     ressVolume,
-    muteMusic,
   };
 };

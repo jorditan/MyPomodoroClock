@@ -17,7 +17,7 @@
       class="bg-[#000000] w-[24rem] h-auto gap-4 flex flex-col justify-around absolute rounded-sm border-double border-4 border-[#1a7c1a] animate-pulseBorder p-4"
     >
       <div class="flex justify-between">
-        <h2 class="text-lg">{{ props.tittle }}</h2>
+        <h2 class="text-2xl">{{ props.tittle }}</h2>
         <svg
           @click="handleVisible"
           xmlns="http://www.w3.org/2000/svg"
@@ -51,11 +51,14 @@
         <MessageError :is-visible="props.errorMessage" :message="errorMessageComputed" />
       </div>
       <div class="flex justify-between mt-1">
-        <button class="btnSecondary w-fit p-2 text-[12px] aling-center" @click="handleVisible">
+        <button
+          class="btnSecondary w-fit p-2 text-[12px] aling-center hover:bg-[#a8e3a858] rounded-sm transition-all"
+          @click="handleVisible"
+        >
           Cancelar
         </button>
         <button
-          class="buttons btnPrimary w-fit p-2 text-[12px] aling-center"
+          class="buttons btnPrimary w-fit p-2 text-[12px] aling-center hover:bg-[#4af44a] transition-all"
           @click="handleClick()"
         >
           Confirmar
@@ -157,6 +160,7 @@ input:focus {
 .counting {
   color: #00ff0052;
   cursor: not-allowed;
+  transition: all;
 }
 
 .noCounting {

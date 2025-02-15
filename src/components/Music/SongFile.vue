@@ -2,7 +2,7 @@
   <div
     @click="handleClick()"
     :class="[
-      'flex gap-2 rounded-sm justify-between items-center p-1 px-3 hover:bg-[#00ff002a]',
+      'flex gap-2 rounded-sm justify-between items-center p-1 px-3 hover:bg-[#00ff002a] border-2 border-[#166e16] border-solid ',
       {
         playing: props.aSong.isPlaying,
       },
@@ -33,7 +33,7 @@
       width="14"
       height="14"
       viewBox="0 0 24 24"
-      fill="#cacaca"
+      fill="#fafafa"
       class="icon icon-tabler icons-tabler-filled icon-tabler-player-pause"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -60,7 +60,7 @@ const handleClick = () => {
 
 <style lang="css" scoped>
 li {
-  color: #cacaca;
+  color: #fafafa;
   text-shadow: none;
 }
 
