@@ -14,7 +14,7 @@
   <div v-if="isVisible" class="modalOverlay">
     <div
       id="modal"
-      class="bg-[#000000] w-[24rem] h-auto gap-4 flex flex-col justify-around absolute rounded-sm border-double border-4 border-[#1a7c1a] animate-pulseBorder p-4"
+      class="bg-[#000000] sm:w-[24rem] w-[20rem] h-auto gap-4 flex flex-col justify-around absolute rounded-sm border-double border-4 border-[#1a7c1a] animate-pulseBorder p-4"
     >
       <div class="flex justify-between">
         <h2 class="text-2xl">{{ props.tittle }}</h2>

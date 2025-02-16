@@ -2,16 +2,16 @@
   <section
     id="pomodoro-container"
     aria-label="Pomodoro section"
-    class="w-full rounded-xl p-6 mr-5 m-auto bg-[#28282860] text-center h-[95%] my-5 items-center border-double border-4 border-[#1a7c1a]"
+    class="w-full w rounded-xl p-4 m-4 sm:p-6 sm:mr-5 bg-[#28282860] text-center h-[95%] sm:my-5 items-center border-double border-4 border-[#1a7c1a]"
   >
     <div class="flex flex-col items-center">
-      <h1 id="tittle" class="text-7xl text-[#fafafa]">
-        I love pomodoro <small class="text-[48px] shadow-none">❤️</small>
+      <h1 id="tittle" class="text-4xl sm:text-7xl text-[#fafafa]">
+        I love pomodoro <small class="sm:text-[2.5rem] text-[1.5rem] shadow-none">❤️</small>
       </h1>
       <p class="text-slate-300 text-[20px] animate-pulse">{{ actualStatus }}</p>
     </div>
 
-    <article id="myClock" class="mt-5">
+    <article id="myClock" class="sm:mt-5">
       <h2 class="text-8xl font-bold text-[#fafafa]">
         {{ isResting() ? breakMinutes : formattedMinutes }}:{{ formattedSeconds }}
       </h2>
@@ -56,6 +56,12 @@
       <p class="text-[16px]">{{ totalBreaks }} descanso/s</p>
 
       <VolumeControler class="mt-5" />
+
+      <div
+        class="md:w-[3rem] md:h-[3rem] w-[2rem] h-[2rem] rounded-sm bg-[#00ff00] flex justify-center items-center hover:bg-[#4af44a] transition-all cursor-pointer absolute right-[12%] bottom-[8%] sm:right-[8%] lg:hidden"
+      >
+        <AudioLines stroke="#282828" class="md:h-[32px] md:w-[32px] h-[24px] w-[24px]" />
+      </div>
     </article>
   </section>
 </template>
@@ -63,6 +69,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { Status } from '../../interfaces/status';
+import { AudioLines } from 'lucide-vue-next';
 import { useMyTimer } from '../../composables/useMyTimer';
 import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 import VolumeControler from '@/components/Music/VolumeControler.vue';
