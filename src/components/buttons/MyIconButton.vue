@@ -1,5 +1,8 @@
 <template>
-  <button @click="props.someFunction" class="m-1 p-1 hover:bg-[#a8e3a858] rounded-[2px]">
+  <button
+    @click="props.someFunction"
+    class="m-1 p-1 bg-[#00ff00] flex justify-center items-center hover:bg-[#4af44a] rounded-[2px]"
+  >
     <slot></slot>
   </button>
 </template>

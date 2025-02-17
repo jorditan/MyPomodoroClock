@@ -4,11 +4,11 @@
       <MyIconButton :some-function="ressVolume">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#00ff00"
+          stroke="#282828"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -25,7 +25,7 @@
           height="20"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#00ff00"
+          stroke="#282828"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -38,7 +38,7 @@
       </MyIconButton>
     </div>
     <div class="flex gap-1 items-center">
-      <p>Volumen: {{ volume }}</p>
+      <p class="text-[20px]">Volumen: {{ volume }}</p>
       <Volume2
         v-if="!isMuted"
         stroke="#cacaca"

@@ -1,5 +1,5 @@
 import { computed, nextTick, ref } from 'vue';
-import { Status } from '../interfaces/status';
+import { Status } from '../../../interfaces/status';
 import { showError } from '@/components/Messages/Error/showError';
 import notification from '@/assets/songs/notificacion.mp3';
 

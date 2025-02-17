@@ -52,16 +52,14 @@
         </div>
       </div>
 
-      <p class="text-[20px] mt-5">Llevas realizadas: {{ totalRounds }} ronda/s de pomodoro</p>
-      <p class="text-[16px]">{{ totalBreaks }} descanso/s</p>
+      <div class="w-full md:w-[50%] m-auto">
+        <p class="text-[20px] md:text-[24px] mt-5">
+          Llevas realizadas: {{ totalRounds }} ronda/s de pomodoro
+        </p>
+        <p class="text-[20px]">{{ totalBreaks }} descanso/s</p>
+      </div>
 
       <VolumeControler class="mt-5" />
-
-      <div
-        class="md:w-[3rem] md:h-[3rem] w-[2rem] h-[2rem] rounded-sm bg-[#00ff00] flex justify-center items-center hover:bg-[#4af44a] transition-all cursor-pointer absolute right-[12%] bottom-[8%] sm:right-[8%] lg:hidden"
-      >
-        <AudioLines stroke="#282828" class="md:h-[32px] md:w-[32px] h-[24px] w-[24px]" />
-      </div>
     </article>
   </section>
 </template>
@@ -69,8 +67,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { Status } from '../../interfaces/status';
-import { AudioLines } from 'lucide-vue-next';
-import { useMyTimer } from '../../composables/useMyTimer';
+import { useMyTimer } from './composables/useMyTimer';
 import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
 import VolumeControler from '@/components/Music/VolumeControler.vue';
 import MyResumeModal from './Modals/ResumeModal/MyResumeModal.vue';
@@ -155,8 +152,7 @@ small {
   }
 }
 
-#pomodoro-container,
-#sidebar-music {
+#pomodoro-container {
   box-shadow: inset 0px 0px 1.2rem;
   background-image: linear-gradient(0deg, #0000 10%, #fff1 90%, #0000 100%);
   animation: crtAnimation 300s linear infinite;
