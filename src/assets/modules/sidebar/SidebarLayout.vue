@@ -9,16 +9,21 @@
   </div>
   <aside
     id="sidebar-music"
-    class="h-[95%] z-[1001] bg-[#28282860] p-2 lg:p-6 w-[95%] lg:w-80 rounded-xl m-2 lg:mx-5 absolute lg:relative border-double border-4 border-[#1a7c1a] animate-pulseBorder transition-transform duration-300 ease-in-out"
+    class="h-[95%] z-[1001] bg-[#28282824] p-2 lg:p-6 w-[95%] lg:w-80 rounded-xl m-2 lg:mx-5 absolute lg:relative border-double border-4 border-[#1a7c1a] animate-pulseBorder transition-transform duration-300 ease-in-out"
     :class="{
       hidden: !isSidebarOpen,
       block: isSidebarOpen,
-      'lg:inline bg-[#282828c0]': true,
+      'lg:inline bg-[#282828f1]': true,
       'disable-effects': openFromHandle,
     }"
   >
     <div class="flex gap-2 items-center">
-      <SquareChevronLeft v-if="isSidebarOpen" stroke="#00ff00" @click="openFromHandle" />
+      <SquareChevronLeft
+        v-if="isSidebarOpen"
+        stroke="#00ff00"
+        @click="openFromHandle"
+        class="cursor-pointer"
+      />
       <h2 class="text-3xl text-[#fafafa]">Mi música</h2>
     </div>
     <div class="mt-2">
@@ -85,7 +90,6 @@ h2 {
   mask-size: 100% 2px;
 }
 
-/* Desactivar efectos cuando se abre desde el botón */
 .disable-effects {
   box-shadow: none !important;
   mask-image: none !important;

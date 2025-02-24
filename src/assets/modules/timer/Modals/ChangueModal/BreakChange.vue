@@ -2,13 +2,13 @@
   <button
     :class="[
       {
-        counting: props.status != Status.waiting,
-        noCounting: props.status == Status.waiting,
+        enabled: props.status == Status.finish,
+        disabled: props.status != Status.finish,
       },
     ]"
     @click="handleVisible"
   >
-    ¿Deseas cambiar el tiempo límite?
+    ¿Cuánto tiempo deseas descansar?
   </button>
 
   <div v-if="isVisible" class="modalOverlay">
@@ -22,14 +22,14 @@
       </div>
       <div class="flex gap-2 flex-col">
         <div class="flex gap-2 items-start flex-col">
-          <label class="text-[16px]" for="minutes">Minutos: </label>
+          <label class="text-[16px]" for="minutes">Minutos de descanso: </label>
           <input
             class="bg-[#282828] text-[20px] w-full border-1 focus:border-[#1a7c1a] rounded-sm border-[#1a7c1a] animate-pulseBorder"
             type="number"
             id="minutes"
             name="minutes"
-            placeholder="Ingrese un nuevo límite de tiempo"
-            v-model="inputValue"
+            placeholder="¿Cuánto deseas estar concentrado?"
+            v-model="inputValueLimit"
           />
         </div>
         <MessageError :is-visible="props.errorMessage" :message="errorMessageComputed" />
@@ -58,16 +58,17 @@ import { Status } from '../../../../interfaces/status';
 import { X } from 'lucide-vue-next';
 import MessageError from '@/components/Messages/Error/MessageError.vue';
 
-const inputValue = ref<number>();
-const previousInput = ref<number | undefined>(undefined);
+const inputValueLimit = ref<number>();
+const inputValueBreak = ref<number>();
+const previousInputMinutes = ref<number | undefined>(undefined);
 
 const props = defineProps({ tittle: String, status: String, errorMessage: Boolean });
 const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
-  if (props.status == Status.waiting) {
+  if (props.status == Status.finish) {
     isVisible.value = !isVisible.value;
-    inputValue.value = undefined;
+    inputValueLimit.value = undefined;
   }
 };
 
@@ -75,25 +76,30 @@ const errorVisible = computed(() => {
   return props.errorMessage;
 });
 
-const emit = defineEmits(['change-limit']);
+const emit = defineEmits(['change-break']);
 
 const handleClick = async () => {
-  if (props.status == Status.waiting) {
-    await emit('change-limit', inputValue.value);
+  if (props.status == Status.finish) {
+    await emit('change-break', inputValueLimit.value);
     if (isVisible.value && !errorVisible.value) {
       isVisible.value = !isVisible.value;
     }
-    previousInput.value = inputValue.value;
-    inputValue.value = undefined;
+    cleanValues();
   }
 };
 
+const cleanValues = () => {
+  previousInputMinutes.value = inputValueLimit.value;
+  inputValueLimit.value = undefined;
+  inputValueBreak.value = undefined;
+};
+
 const errorMessageComputed = computed(() => {
-  if (previousInput.value !== undefined && errorVisible) {
-    if (previousInput.value >= 60) {
-      return 'No puedes realizar más de 60 minutos de pomodoro';
+  if (previousInputMinutes.value !== undefined && errorVisible) {
+    if (previousInputMinutes.value >= 60) {
+      return 'No puedes realizar más de 60 minutos de descanso';
     }
-    if (previousInput.value <= 0) {
+    if (previousInputMinutes.value <= 0) {
       return 'Ingrese más de 0 minutos';
     }
   }
@@ -142,13 +148,13 @@ input:focus {
   @apply text-[16px] text-[#00ff00] px-2;
 }
 
-.counting {
-  color: #00ff0052;
+.disabled {
+  color: #bec7be52;
   cursor: not-allowed;
   transition: all;
 }
 
-.noCounting {
+.enabled {
   @apply underline text-[#00ff00];
 }
 </style>

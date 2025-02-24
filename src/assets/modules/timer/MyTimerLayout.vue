@@ -2,7 +2,7 @@
   <section
     id="pomodoro-container"
     aria-label="Pomodoro section"
-    class="w-full w rounded-xl p-4 m-4 sm:p-6 sm:mr-5 bg-[#28282860] text-center h-[95%] sm:my-5 items-center border-double border-4 border-[#1a7c1a]"
+    class="w-full w lg:rounded-xl lg:mr-5 bg-[#28282860] text-center h-[100%] p-6 lg:h-[95%] lg:my-5 items-center lg:p-6"
   >
     <div class="flex flex-col items-center">
       <h1 id="tittle" class="text-4xl sm:text-7xl text-[#fafafa]">
@@ -31,10 +31,18 @@
             :status="actualStatus"
           />
         </div>
-        <ChangueModal
-          tittle="Cambiar tiempo límite"
+        <TimeChange
+          v-if="actualStatus == Status.waiting"
+          tittle="Personalizar tiempo"
           :status="actualStatus"
           @change-limit="defineLimit"
+          :errorMessage="errorVisible"
+        />
+        <BreakChange
+          v-if="actualStatus == Status.finish"
+          tittle="Personalizar tiempo"
+          :status="actualStatus"
+          @change-break="defineBreak"
           :errorMessage="errorVisible"
         />
       </div>
@@ -68,9 +76,10 @@
 import { ref, watch } from 'vue';
 import { Status } from '../../interfaces/status';
 import { useMyTimer } from './composables/useMyTimer';
-import ChangueModal from './Modals/ChangueModal/ChangueModal.vue';
+import TimeChange from './Modals/ChangueModal/TimeChange.vue';
 import VolumeControler from '@/components/Music/VolumeControler.vue';
 import MyResumeModal from './Modals/ResumeModal/MyResumeModal.vue';
+import BreakChange from './Modals/ChangueModal/BreakChange.vue';
 
 const {
   formattedSeconds,
@@ -87,6 +96,7 @@ const {
 
   handleStatus,
   defineLimit,
+  defineBreak,
 } = useMyTimer();
 
 const text = {

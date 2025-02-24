@@ -5,16 +5,29 @@ import notification from '@/assets/songs/notificacion.mp3';
 
 export const useMyTimer = () => {
   const { showMessage, errorVisible } = showError();
+  const actualStatus = ref<Status>(Status.waiting);
+
+  // Variables utilizadas para el total de rondas realizadas el comienzo 👇
+
   const totalRounds = ref<number>(0);
   const totalBreaks = ref<number>(0);
+
+  // Variables utilizadas para setear el comienzo 👇
+
   const seconds = ref<number>(0);
   const minutes = ref<number>(25);
-  const total = ref<number>(25);
-  const totalBreakMinutes = ref<number>(5);
   const breakMinutes = ref<number>(5);
+
+  // Variables utlizadas para medir el porcentaje de realizado 👇
+
+  const totalBreakMinutes = ref<number>(5);
+  const total = ref<number>(25);
+
+  // Variables utilizadas para lo transcurrido 👇
+
   const transcorredMinutes = ref<number>(0);
-  const transcorredBreak = ref<number>(0);
-  const actualStatus = ref<Status>(Status.waiting);
+
+  // Variables utilizadas para el resumen 👇
 
   const resumeMinutes = ref<number>(0);
   const resumeBreak = ref<number>(0);
@@ -75,7 +88,6 @@ export const useMyTimer = () => {
         if (breakMinutes.value > 0) {
           seconds.value = 59;
           breakMinutes.value--;
-          transcorredBreak.value++;
         }
       } else {
         seconds.value--;
@@ -118,14 +130,28 @@ export const useMyTimer = () => {
   const defineLimit = async (number: number | undefined): Promise<void> => {
     if (number != undefined) {
       if (number <= 0) {
-        showMessage('Ingresa un número mayor a 0');
+        showMessage();
       } else if (number <= 60) {
         errorVisible.value = false;
         await nextTick();
         minutes.value = number;
         total.value = number;
       } else {
-        showMessage('No puedes ingresar más de 60 minutos');
+        showMessage();
+      }
+    }
+  };
+
+  const defineBreak = async (aNumber: number | undefined): Promise<void> => {
+    if (aNumber != undefined) {
+      if (aNumber <= 0) {
+        showMessage();
+      } else if (aNumber <= 60) {
+        errorVisible.value = false;
+        await nextTick();
+        breakMinutes.value = aNumber;
+      } else {
+        showMessage();
       }
     }
   };
@@ -138,7 +164,7 @@ export const useMyTimer = () => {
     totalRounds,
     totalBreaks,
     transcorredMinutes,
-    transcorredBreak,
+
     errorVisible,
     minutes,
     resumeMinutes,
@@ -148,5 +174,6 @@ export const useMyTimer = () => {
     handleStatus,
     finishCounting,
     defineLimit,
+    defineBreak,
   };
 };

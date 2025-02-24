@@ -3,8 +3,8 @@
     :class="[
       'secondary w-[220px] aling-center ',
       {
-        enabled: props.status == Status.finish,
-        disabled: props.status != Status.finish,
+        enabled: canShow(),
+        disabled: !canShow(),
       },
     ]"
     @click="handleVisible"
@@ -49,12 +49,21 @@ const props = defineProps({
   resumeBreak: Number,
   resumeMinutes: Number,
 });
+
 const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
-  if (props.status == Status.finish) {
+  if (canShow()) {
     isVisible.value = !isVisible.value;
   }
+};
+
+const canShow = () => {
+  return (
+    props.status != Status.counting &&
+    props.status != Status.resting &&
+    props.status != Status.breakRest
+  );
 };
 </script>
 
