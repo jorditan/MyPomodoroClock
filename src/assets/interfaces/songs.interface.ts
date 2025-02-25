@@ -5,6 +5,9 @@ export interface ISong {
   genre: string;
   duracion: number;
   isPlaying: boolean;
+  isMuted: boolean;
   reproduce: () => void;
   pause: () => void;
+  mute: () => void;
+  desmute: () => void;
 }

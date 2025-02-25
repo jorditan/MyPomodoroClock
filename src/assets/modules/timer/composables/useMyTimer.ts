@@ -96,11 +96,15 @@ export const useMyTimer = () => {
     }, 10);
   };
 
-  const finishCounting = (): void => {
-    stopCounting();
+  const playFinishSound = (): void => {
     const audio = new Audio(notification);
     audio.volume = 0.5;
     audio.play();
+  };
+
+  const finishCounting = (): void => {
+    stopCounting();
+    playFinishSound();
     minutes.value = total.value;
     totalRounds.value++;
     actualStatus.value = Status.finish;
@@ -110,6 +114,7 @@ export const useMyTimer = () => {
 
   const finisBreak = (): void => {
     stopCounting();
+    playFinishSound();
     breakMinutes.value = totalBreakMinutes.value;
     totalBreaks.value++;
     actualStatus.value = Status.waiting;

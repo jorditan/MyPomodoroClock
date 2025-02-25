@@ -16,6 +16,7 @@ export const myMusic = () => {
   const audio = new Audio();
   const isMuted = ref<boolean>(false);
   const currentSong = ref<ISong | undefined>();
+
   audio.volume = volume.value;
   audio.loop = true;
 
@@ -36,6 +37,7 @@ export const myMusic = () => {
       genre: string,
       volume: number = 0.2,
       isPlaying: boolean = false,
+      isMuted: boolean = false,
     ) {
       this.name = name;
       this.id = id;
@@ -44,10 +46,14 @@ export const myMusic = () => {
       this.genre = genre;
       this.volume = volume;
       this.isPlaying = isPlaying;
+      this.isMuted = isMuted;
     }
+    isMuted: boolean;
 
     reproduce(): void {
       this.isPlaying = true;
+      this.desmute();
+      currentSong.value = this;
       const prevSong =
         reproducedSongs.value.length > 0
           ? reproducedSongs.value[reproducedSongs.value.length - 1]
@@ -73,6 +79,16 @@ export const myMusic = () => {
     pause(): void {
       this.isPlaying = false;
       audio.pause();
+    }
+
+    mute(): void {
+      this.isMuted = true;
+      audio.muted = true;
+    }
+
+    desmute(): void {
+      this.isMuted = false;
+      audio.muted = false;
     }
   }
 
@@ -106,23 +122,6 @@ export const myMusic = () => {
     return song.genre == 'Ruido blanco';
   });
 
-  const addVolume = (): void => {
-    if (volume.value < 1) {
-      volume.value = Number((volume.value + 0.2).toFixed(1));
-    }
-  };
-
-  const ressVolume = (): void => {
-    if (volume.value > 0) {
-      volume.value = Number((volume.value - 0.2).toFixed(1));
-    }
-  };
-
-  const mute = () => {
-    isMuted.value = !isMuted.value;
-    audio.muted = isMuted.value;
-  };
-
   return {
     songs,
     binauralSongs,
@@ -130,9 +129,6 @@ export const myMusic = () => {
     whiteNoise,
     volume,
     isMuted,
-
-    addVolume,
-    mute,
-    ressVolume,
+    currentSong,
   };
 };

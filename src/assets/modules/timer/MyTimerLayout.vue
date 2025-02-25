@@ -66,8 +66,6 @@
         </p>
         <p class="text-[20px]">{{ totalBreaks }} descanso/s</p>
       </div>
-
-      <VolumeControler class="mt-5" />
     </article>
   </section>
 </template>
@@ -77,7 +75,6 @@ import { ref, watch } from 'vue';
 import { Status } from '../../interfaces/status';
 import { useMyTimer } from './composables/useMyTimer';
 import TimeChange from './Modals/ChangueModal/TimeChange.vue';
-import VolumeControler from '@/components/Music/VolumeControler.vue';
 import MyResumeModal from './Modals/ResumeModal/MyResumeModal.vue';
 import BreakChange from './Modals/ChangueModal/BreakChange.vue';
 
