@@ -12,12 +12,11 @@ import nothing from '@/assets/songs/Just nothing.mp3';
 
 export const myMusic = () => {
   const reproducedSongs = ref<ISong[]>([]);
-  const volume = ref<number>(0.2);
   const audio = new Audio();
   const isMuted = ref<boolean>(false);
   const currentSong = ref<ISong | undefined>();
 
-  audio.volume = volume.value;
+  audio.volume = 0.2;
   audio.loop = true;
 
   class Song implements ISong {
@@ -26,8 +25,8 @@ export const myMusic = () => {
     duracion: number;
     isPlaying: boolean;
     file: string;
-    genre: string;
     volume: number;
+    genre: string;
 
     constructor(
       name: string,
@@ -52,8 +51,9 @@ export const myMusic = () => {
 
     reproduce(): void {
       this.isPlaying = true;
-      this.desmute();
       currentSong.value = this;
+      this.volume = audio.volume;
+
       const prevSong =
         reproducedSongs.value.length > 0
           ? reproducedSongs.value[reproducedSongs.value.length - 1]
@@ -90,6 +90,24 @@ export const myMusic = () => {
       this.isMuted = false;
       audio.muted = false;
     }
+
+    incrementVolume(): void {
+      if (!currentSong.value) return; // Evita el error si no hay canción activa
+      currentSong.value.volume = Math.min(
+        1,
+        Math.round((currentSong.value.volume + 0.2) * 10) / 10,
+      );
+      audio.volume = currentSong.value.volume;
+    }
+
+    decrementVolume(): void {
+      if (!currentSong.value) return;
+      currentSong.value.volume = Math.max(
+        0,
+        Math.round((currentSong.value.volume - 0.2) * 10) / 10,
+      );
+      audio.volume = currentSong.value.volume;
+    }
   }
 
   audio.addEventListener('ended', () => {
@@ -122,13 +140,28 @@ export const myMusic = () => {
     return song.genre == 'Ruido blanco';
   });
 
+  const muteAllSongs = (songs: ISong[]) => {
+    songs.map((song) => {
+      song.mute();
+    });
+  };
+
+  const desmuteAllSongs = (songs: ISong[]) => {
+    songs.map((song) => {
+      song.desmute();
+    });
+  };
+
   return {
     songs,
     binauralSongs,
     jazzSongs,
     whiteNoise,
-    volume,
     isMuted,
     currentSong,
+    audio,
+
+    muteAllSongs,
+    desmuteAllSongs,
   };
 };

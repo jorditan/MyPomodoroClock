@@ -77,7 +77,7 @@ export const useMyTimer = () => {
         seconds.value--;
       }
       updateTitle();
-    }, 10);
+    }, 1000);
   };
 
   const passTimeBreak = (): void => {

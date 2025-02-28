@@ -30,7 +30,7 @@
       <SongsGroup genre="Jazz" :songs="jazzSongs" />
       <SongsGroup genre="Sonidos binaurales" :songs="binauralSongs" />
       <SongsGroup genre="Ruido blanco" :songs="whiteNoise" />
-      <VolumeControler class="mt-5" :a-song="currentSong" />
+      <VolumeControler class="mt-5" :a-song="currentSong" :songs="songs" />
     </div>
     <div></div>
   </aside>
@@ -43,7 +43,7 @@ import VolumeControler from '@/components/Music/VolumeControler.vue';
 import SongsGroup from '@/components/Music/SongsGroup.vue';
 import { SquareChevronLeft } from 'lucide-vue-next';
 
-const { binauralSongs, jazzSongs, whiteNoise, currentSong } = myMusic();
+const { binauralSongs, jazzSongs, whiteNoise, currentSong, songs } = myMusic();
 const isSidebarOpen = ref<boolean>(false);
 const openedFromHandle = ref<boolean>(false);
 

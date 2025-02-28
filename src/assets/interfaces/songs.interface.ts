@@ -3,6 +3,7 @@ export interface ISong {
   name: string;
   file: string;
   genre: string;
+  volume: number;
   duracion: number;
   isPlaying: boolean;
   isMuted: boolean;
@@ -10,4 +11,6 @@ export interface ISong {
   pause: () => void;
   mute: () => void;
   desmute: () => void;
+  incrementVolume: () => void;
+  decrementVolume: () => void;
 }
