@@ -3,8 +3,8 @@
     :class="[
       'secondary w-[220px] aling-center ',
       {
-        enabled: canShow(),
-        disabled: !canShow(),
+        enabled: !canShow(),
+        disabled: canShow(),
       },
     ]"
     @click="handleVisible"
@@ -53,17 +53,13 @@ const props = defineProps({
 const isVisible = ref<boolean>(false);
 
 const handleVisible = () => {
-  if (canShow()) {
+  if (!canShow()) {
     isVisible.value = !isVisible.value;
   }
 };
 
 const canShow = () => {
-  return (
-    props.status != Status.counting &&
-    props.status != Status.resting &&
-    props.status != Status.breakRest
-  );
+  return props.status != Status.waiting && props.status != Status.finish;
 };
 </script>
 
